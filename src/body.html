@@ -1,0 +1,101 @@
+
+<canvas id="c"></canvas>
+
+<div id="hud" hidden>
+  <canvas id="compass" width="480" height="34"></canvas>
+  <div id="tags"></div>
+  <div id="squad" hidden></div>
+  <div id="tr"><div class="stat" id="sqstat" hidden><b id="squads">0</b><span>squads</span></div><div class="stat"><b id="alive">0</b><span>alive</span></div><div class="stat"><b id="kills">0</b><span>kills</span></div></div>
+  <div id="feed"></div>
+  <div id="msg"></div>
+  <div id="center" hidden></div>
+  <div id="cross"><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="hitm"></div>
+  <div id="dmgind"></div>
+  <div id="prompt" hidden></div>
+  <div id="scope" hidden></div>
+  <div id="reticle"></div>
+  <div id="vign"></div>
+  <div id="stormtint"></div>
+  <div id="bottom">
+    <div id="vehpanel" hidden><b id="vspd">0</b><small>km/h</small><div id="vehhp"><i id="vhpbar"></i></div><small id="vname"></small></div>
+    <div id="healbar" hidden><div id="healfill"></div><span id="healtxt"></span></div>
+    <div id="gear"><span id="gp">Bag —</span><span id="gv">Vest —</span><span id="gh">Helmet —</span><span id="gb"><span class="k">4</span>Bandage 0</span><span id="gm"><span class="k">5</span>Med kit 0</span></div>
+    <div id="hpwrap"><div id="hpghost"></div><div id="hp"></div></div>
+  </div>
+  <div id="weap"><div class="slot" id="s0"><span>1 · Fists</span><span class="am"></span></div><div class="slot" id="s1"><span>2 · Empty</span><span class="am"></span></div></div>
+  <div id="mmwrap"><div id="zonet"><span id="zlabel">Storm</span><b id="ztime">0:00</b></div><canvas id="mm" width="200" height="200"></canvas></div>
+</div>
+
+<div id="bigmap" hidden><canvas id="bm" width="900" height="900"></canvas></div>
+<div id="inv" hidden>
+  <div class="invhead"><button data-itab="inv" class="on">Inventory <span class="k">Tab</span></button><button data-itab="stats">Match stats <span class="k">S</span></button><span id="invmsg"></span><span class="hint">Click to use or attach · Right-click to drop · Drag attachments onto a gun · Tab to close</span></div>
+  <div class="invbody" id="invbody">
+    <section class="col"><h3>Nearby</h3><div class="list" id="nearList" data-drop="near"></div></section>
+    <section class="col"><h3>Backpack <span class="mono" id="capTxt"></span></h3><div class="capbar"><i id="capFill"></i></div><div class="list" id="bagList" data-drop="bag"></div></section>
+    <section class="col"><h3>Equipment</h3><div class="gear3" id="gearRow"></div><div id="gunCards" style="display:flex;flex-direction:column;gap:10px"></div></section>
+  </div>
+  <div id="invstats" hidden><div class="board" id="invtable"></div></div>
+</div>
+
+<div id="pause" class="overlay" hidden>
+  <div class="pausewrap">
+  <div class="card">
+    <h2 id="ptitle">Paused</h2>
+    <p id="psub">Click Resume to continue. The match keeps running.</p>
+    <div class="btns" style="margin-bottom:18px"><button class="btn cta" id="btnResume">Resume</button><button class="btn" id="btnQuit">Leave match</button></div>
+    <dl class="keys" id="pkeys"></dl>
+  </div>
+  <div class="pstats"><h3>Match stats</h3><div class="board" id="ptable"></div></div>
+  </div>
+</div>
+
+<div id="end" class="overlay" hidden>
+  <div class="head"><div class="place" id="eplace">#1</div><div><div class="verdict" id="everdict"></div><div class="sub" id="esub"></div></div></div>
+  <div class="board" id="etable"></div>
+  <div class="btns"><button class="btn" id="btnSpec">Spectate</button><button class="btn cta" id="btnMenu">Main menu</button></div>
+</div>
+
+<div id="menu" hidden>
+  <div class="m-col">
+    <div>
+      <div class="eyebrow">Browser battle royale · peer to peer</div>
+      <h1>STORMLINE<span>ROYALE</span></h1>
+      <p class="tag">Jump from the cargo plane, loot the island, take a jeep or a bike, and be the last one standing inside the storm.</p>
+    </div>
+    <label class="fld"><span>Callsign</span><input id="nm" maxlength="14" autocomplete="off"></label>
+    <div class="tabs" role="tablist"><button data-tab="solo" class="on">Solo vs bots</button><button data-tab="host">Host online</button><button data-tab="join">Join online</button></div>
+    <div class="pane" id="p-solo">
+      <div class="fld"><span>Players (you + bots)</span><div class="range"><input type="range" id="botsN" min="10" max="80" value="40"><b id="botsNv">40</b></div></div>
+      <div class="fld"><span>Island size (new random island every match)</span><div class="seg" data-seg="map"><button data-v="small">Small · 1.2 km</button><button data-v="medium" class="on">Medium · 2 km</button><button data-v="large">Large · 3 km</button></div></div>
+      <div class="fld"><span>Squad size (bots fill your squad)</span><div class="seg" data-seg="team"><button data-v="1" class="on">Solo</button><button data-v="2">Duo</button><button data-v="3">Squad of 3</button></div></div>
+      <div class="fld"><span>Bot skill</span><div class="seg" data-seg="diff"><button data-v="easy">Easy</button><button data-v="normal" class="on">Normal</button><button data-v="hard">Hard</button></div></div>
+      <div class="fld"><span>Camera</span><div class="seg" data-seg="view"><button data-v="tpp" class="on">Third person</button><button data-v="fpp">First person</button></div></div>
+      <button class="btn cta" id="btnSolo">Deploy</button>
+    </div>
+    <div class="pane" id="p-host" hidden>
+      <div class="fld"><span>Fill match with bots up to</span><div class="range"><input type="range" id="hostN" min="2" max="64" value="30"><b id="hostNv">30</b></div></div>
+      <div class="fld"><span>Island size (new random island every match)</span><div class="seg" data-seg="map"><button data-v="small">Small · 1.2 km</button><button data-v="medium" class="on">Medium · 2 km</button><button data-v="large">Large · 3 km</button></div></div>
+      <div class="fld"><span>Squad size (players in the room team up first)</span><div class="seg" data-seg="team"><button data-v="1" class="on">Solo</button><button data-v="2">Duo</button><button data-v="3">Squad of 3</button></div></div>
+      <div class="fld"><span>Bot skill</span><div class="seg" data-seg="diff"><button data-v="easy">Easy</button><button data-v="normal" class="on">Normal</button><button data-v="hard">Hard</button></div></div>
+      <div class="fld"><span>Camera</span><div class="seg" data-seg="view"><button data-v="tpp" class="on">Third person</button><button data-v="fpp">First person</button></div></div>
+      <button class="btn" id="btnHost">Open room</button>
+    </div>
+    <div class="pane" id="p-join" hidden>
+      <div class="row"><label class="fld"><span>Room code</span><input id="joinCode" maxlength="6" autocomplete="off" placeholder="K7Q2M"></label><button class="btn" id="btnJoin">Join</button></div>
+    </div>
+    <div id="lobby" hidden>
+      <div class="note">Room code — share it with friends</div>
+      <div class="code" id="lcode">-----</div>
+      <ul id="lplayers"></ul>
+      <button class="btn cta" id="btnStart" hidden>Start match</button>
+      <button class="btn" id="btnLeaveLobby">Leave room</button>
+    </div>
+    <div id="netstat" role="status"></div>
+    <p class="note">Online play connects browsers directly over WebRTC, so open the downloaded game file in a normal browser tab (embedded previews block it). Peers find each other through public BitTorrent trackers, so there is no game server. The host's browser runs the bots and hands out loot.</p>
+  </div>
+  <div class="m-keys"><h4>Controls</h4><dl class="keys" id="mkeys"></dl></div>
+</div>
+
+<div id="loading">Loading island…</div>
+<div id="mobile" hidden>Stormline needs a keyboard and mouse. Open it on a desktop browser.</div>

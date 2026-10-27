@@ -1,0 +1,7 @@
+{
+  "name": "stormline-tests",
+  "private": true,
+  "description": "Headless test harness deps. After npm install, run: npm run bundle-trystero",
+  "scripts": { "bundle-trystero": "esbuild --bundle --format=esm node_modules/@trystero-p2p/torrent/dist/index.mjs --outfile=trystero.mjs" },
+  "dependencies": { "three": "0.170.0", "@trystero-p2p/torrent": "0.25.4", "esbuild": "^0.24.0" }
+}

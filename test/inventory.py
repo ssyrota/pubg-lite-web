@@ -1,0 +1,31 @@
+p,logs=page(b,1366,768)
+p.wait_for_selector('#menu:not([hidden])',timeout=60000)
+p.evaluate("()=>{document.querySelector('[data-seg=view] button[data-v=\"fpp\"]').click();document.getElementById('botsN').value=12;}")
+p.click('#btnSolo')
+p.evaluate("()=>{window.requestAnimationFrame=()=>0;const s=window.__sl;s.G.locked=true;document.getElementById('pause').hidden=true;s.renderer.setPixelRatio(1);}")
+def sim(sec, dt=1/30, js=''):
+    return p.evaluate(f"()=>{{const s=window.__sl;for(let i=0;i<Math.round({sec}/{dt});i++){{{js};s.simulate({dt});for(const k in s.pressed)delete s.pressed[k];}}return [s.me.mode,s.G.t|0,s.me.hp|0]}}")
+def ev(js): return p.evaluate("()=>{const s=window.__sl;"+js+"}")
+def shot(name):
+    ev("s.render()"); p.screenshot(path=f'shots/{name}.png',timeout=180000)
+sim(3); ev("s.pressed.KeyF=true"); print(sim(42))
+ev("for(const e of s.ents.values())if(e!==s.me){e.dead=true;e.mode='dead';}")
+ev("const m=s.me;m.inv.w[0]={k:'rifle',mag:30,att:{sight:'x2',muzzle:'comp'},single:false};m.inv.w[1]={k:'sniper',mag:5,att:{},single:false};m.inv.cur=0;m.inv.ammo['5.56']=120;m.inv.ammo['7.62']=40;m.inv.att=['vgrip','extmag','x8','supp','cheek'];m.bag=2;m.vest=2;m.vd=170;m.helm=1;m.hd=60;m.inv.band=4;m.inv.med=1;s.look.pitch=-0.05")
+print(sim(0.4,js="s.keys.KeyW=true")); shot('fpp_hip')
+ev("s.keys.KeyW=false")
+# open inventory via Tab key
+p.keyboard.press('Tab'); time.sleep(0.3)
+print('invOpen', ev("return s.G.invOpen"))
+ev("s.render()"); p.screenshot(path='shots/inv1.png',timeout=180000)
+# click backpack attachment vgrip -> attach
+p.click('#bagList [data-a=batt] >> nth=0'); time.sleep(0.2)
+print('after click attach', ev("return [s.me.inv.w[0].att, s.me.inv.att]"))
+# drag x8 onto sniper sight slot
+src=p.locator('#bagList [data-a=batt]', has_text='8×'); dst=p.locator('.slotx[data-w="1"][data-s="sight"]')
+src.drag_to(dst); time.sleep(0.2)
+print('after drag', ev("return [s.me.inv.w[1].att, s.me.inv.att]"))
+p.keyboard.press('KeyS'); time.sleep(0.3); print('tab', ev("return document.getElementById('invstats').hidden"))
+p.keyboard.press('KeyS'); time.sleep(0.2)
+ev("s.render()"); p.screenshot(path='shots/inv2.png',timeout=180000)
+p.keyboard.press('Tab'); time.sleep(0.3); print('closed', ev("return [s.G.invOpen,s.G.locked]"))
+print([l for l in logs if 'ERR_FAILED' not in l][:8])

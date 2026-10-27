@@ -1,0 +1,10 @@
+# Brief: COMBAT, CHARACTERS, PUBG BALANCE
+User: realistic physics like PUBG/BattleBit; "check that vests and armor work right, take all balancing from PUBG or PUBG Lite (not mobile)".
+1. Balance from PUBG PC (research + cite): pistol≈P92, SMG≈UMP45, shotgun≈S1897, rifle≈M416, DMR≈SKS, bolt sniper≈Kar98k (keep our original names). Damage, RPM, mag/extended mag, reload, muzzle velocity, falloff, hit-zone multipliers (head, torso, stomach, arms, legs), helmet 1/2/3 reduction+durability (verify 30/40/55%, 80/150/230), vest 1/2/3 (verify 30/40/55%, 200/220/250; torso only), durability rules, bag capacities (+vest capacity), heals (bandage +10 to 75 over time, first aid to 75, med kit to 100), optional boosts. Hit zones in raycast. Print a shots-to-kill table per weapon/armor/zone and compare (e.g. Kar98k head one-shots lvl1/2 helmet, not lvl3).
+2. Ballistics: projectiles with muzzle velocity, gravity drop, travel time; tracers follow; shooter deals damage; network shot = origin+dir+velocity; shotgun pellets; bots lead targets and compensate drop.
+3. Characters: better original low-poly humanoid (BattleBit-like proportions, elbows/knees/hands/face hint), gear meshes differ per vest/helmet/bag level, procedural animations (idle, walk, sprint, crouch, jump/fall, parachute, aim, reload, heal, knocked crawl, sit, lean), ragdoll on death; keep draw calls sane for ~80 characters.
+4. First person: proper arms/hands per weapon, sight alignment (tap RMB ADS, hold RMB shoulder aim), sway, bob, recoil kick/recovery, reload anim, sprint pose.
+5. Movement: weighty accel/decel, PUBG speeds, slopes, vault/climb ≤1.3 m with Space, PUBG-like fall damage, swimming in deep water (no shooting), prone (Z) optional.
+6. Recoil patterns per weapon, reduced by attachments (wStats), ADS speed, bloom.
+Owns: 30-meshes.js, 50-combat.js, 55-sim.js, 60-bots.js, 65-input-camera.js, weapon/armor/bag constants in 00-core.js, raycast() in 25-collision.js. List HUD/inventory/net changes needed for new items (first aid, boosts, zones).
+Test: bots still fight sensibly, balance table, visible drop at 300+ m, character and FPP screenshots.
